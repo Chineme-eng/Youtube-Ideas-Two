@@ -1,1 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mixed Niche Ideas — Tech/AI x High-RPM</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #FAF6EE;
+    --cream-dark: #F0E9D8;
+    --orange: #E8600A;
+    --orange-light: #FF7A20;
+    --charcoal: #1C1814;
+    --ink: #2E2820;
+    --muted: #7A6E60;
+    --border: #DDD3BB;
 
+    /* Niche colors */
+    --finance-bg: #E8F5EA; --finance-fg: #1E5C2A;
+    --business-bg: #E6F1FB; --business-fg: #0C447C;
+    --productivity-bg: #FFF4DC; --productivity-fg: #7A4200;
+    --education-bg: #F0E8FF; --education-fg: #4A2A8A;
+
+    /* Difficulty */
+    --easy-bg: #E8F5EA; --easy-fg: #2E6B38;
+    --medeasy-bg: #FFF4DC; --medeasy-fg: #A36300;
+    --medium-bg: #FDEAE3; --medium-fg: #A83008;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+  /* HEADER */
+  .header {
+    background: var(--charcoal);
+    padding: 2.75rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(232,96,10,0.15) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 50%, rgba(232,96,10,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(255,122,32,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 0.85rem;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    font-weight: 900; color: var(--cream); line-height: 1.1;
+    margin-bottom: 0.9rem;
+  }
+  .header h1 span { color: var(--orange-light); }
+  .niche-tags {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+  }
+  .niche-tag {
+    font-size: 11px; font-weight: 500; padding: 4px 12px;
+    border-radius: 20px; letter-spacing: 0.04em;
+  }
+  .nt-finance  { background: rgba(232,245,234,0.15); color: #8BC898; border: 1px solid rgba(139,200,152,0.3); }
+  .nt-business { background: rgba(230,241,251,0.15); color: #8AB8DF; border: 1px solid rgba(138,184,223,0.3); }
+  .nt-productivity { background: rgba(255,244,220,0.15); color: #F5C875; border: 1px solid rgba(245,200,117,0.3); }
+  .nt-education { background: rgba(240,232,255,0.15); color: #C4A3F0; border: 1px solid rgba(196,163,240,0.3); }
+
+  /* TOOLBAR */
+  .toolbar {
+    background: var(--cream-dark);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  }
+  .search-wrap { flex: 1; min-width: 220px; position: relative; }
+  .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; opacity: 0.4; pointer-events: none; }
+  .search-input {
+    width: 100%; padding: 9px 14px 9px 38px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--cream); color: var(--ink);
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--orange); }
+  .search-input::placeholder { color: var(--muted); }
+
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    padding: 6px 13px; border-radius: 20px;
+    border: 1px solid var(--border); background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--muted); cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--orange); color: var(--orange); }
+  .pill.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+  /* Niche pills colored when active */
+  .pill.active.p-finance { background: var(--finance-fg); border-color: var(--finance-fg); }
+  .pill.active.p-business { background: var(--business-fg); border-color: var(--business-fg); }
+  .pill.active.p-productivity { background: var(--productivity-fg); border-color: var(--productivity-fg); }
+  .pill.active.p-education { background: var(--education-fg); border-color: var(--education-fg); }
+
+  /* MAIN */
+  .main { max-width: 1140px; margin: 0 auto; padding: 1.75rem 1.5rem 4rem; }
+  .results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 8px; }
+  .results-count { font-size: 13px; color: var(--muted); }
+  .results-count strong { color: var(--orange); font-weight: 500; }
+  .sort-select {
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: 12px; color: var(--ink); cursor: pointer; outline: none;
+  }
+
+  /* GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  .card {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .card:hover { box-shadow: 0 5px 22px rgba(232,96,10,0.10); border-color: var(--orange); transform: translateY(-2px); }
+
+  /* Colored left accent by niche */
+  .card.finance    { border-left: 3px solid var(--finance-fg); }
+  .card.business   { border-left: 3px solid var(--business-fg); }
+  .card.productivity { border-left: 3px solid var(--productivity-fg); }
+  .card.education  { border-left: 3px solid var(--education-fg); }
+
+  .card-top { display: flex; align-items: flex-start; gap: 9px; }
+  .card-num { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: var(--orange); opacity: 0.55; flex-shrink: 0; margin-top: 2px; }
+  .card-title { font-size: 13.5px; font-weight: 500; color: var(--ink); line-height: 1.45; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .badge { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+
+  /* Niche badges */
+  .b-finance      { background: var(--finance-bg);      color: var(--finance-fg); }
+  .b-business     { background: var(--business-bg);     color: var(--business-fg); }
+  .b-productivity { background: var(--productivity-bg); color: var(--productivity-fg); }
+  .b-education    { background: var(--education-bg);    color: var(--education-fg); }
+
+  /* Difficulty badges */
+  .b-easy    { background: #E8F5EA; color: #2E6B38; }
+  .b-medeasy { background: #FFF4DC; color: #A36300; }
+  .b-medium  { background: #FDEAE3; color: #A83008; }
+
+  /* AI badge */
+  .b-ai  { background: #EAE8FF; color: #3D33A8; }
+  .b-rpm { background: #E3F5F0; color: #145C4A; }
+
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.55; border-top: 1px solid #F0E9D8; padding-top: 9px; }
+  .no-results { grid-column: 1/-1; text-align: center; padding: 5rem 1rem; color: var(--muted); font-size: 15px; }
+
+  /* LEGEND */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-bottom: 1.25rem; font-size: 12px; color: var(--muted); align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* FOOTER */
+  .footer { background: var(--charcoal); padding: 1.5rem 2rem; text-align: center; font-size: 12px; color: #5A5044; letter-spacing: 0.05em; }
+  .footer span { color: var(--orange); }
+
+  @media (max-width: 600px) {
+    .header { padding: 2rem 1.25rem 1.75rem; }
+    .toolbar { padding: 0.85rem 1rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-eyebrow">Faceless YouTube — Mixed Niche Bible</div>
+  <h1>Tech/AI <span>×</span> High-RPM Niches</h1>
+  <div class="niche-tags">
+    <span class="niche-tag nt-finance">Finance &amp; Money</span>
+    <span class="niche-tag nt-business">Business &amp; SaaS</span>
+    <span class="niche-tag nt-productivity">Productivity &amp; Self-Improvement</span>
+    <span class="niche-tag nt-education">Education &amp; Tutorials</span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="search-input" type="text" id="search" placeholder="Search 204 ideas... try 'investing', 'SaaS', 'morning routine'" oninput="render()" />
+  </div>
+  <div class="filter-row" id="filters">
+    <button class="pill active"            onclick="setFilter('all',this)">All</button>
+    <button class="pill p-finance"         onclick="setFilter('finance',this)">Finance &amp; Money</button>
+    <button class="pill p-business"        onclick="setFilter('business',this)">Business &amp; SaaS</button>
+    <button class="pill p-productivity"    onclick="setFilter('productivity',this)">Productivity</button>
+    <button class="pill p-education"       onclick="setFilter('education',this)">Education</button>
+    <button class="pill"                   onclick="setFilter('ai',this)">AI-Powered</button>
+    <button class="pill"                   onclick="setFilter('easy',this)">Easy</button>
+    <button class="pill"                   onclick="setFilter('medium-easy',this)">Medium Easy</button>
+    <button class="pill"                   onclick="setFilter('medium',this)">Medium</button>
+  </div>
+</div>
+
+<main class="main">
+  <div class="results-bar">
+    <div class="results-count" id="results-count">Showing <strong id="count-num">0</strong> ideas</div>
+    <select class="sort-select" id="sort-select" onchange="render()">
+      <option value="default">Sort: Default</option>
+      <option value="niche">By niche</option>
+      <option value="easy-first">Easiest first</option>
+      <option value="hard-first">Hardest first</option>
+      <option value="az">A → Z</option>
+    </select>
+  </div>
+  <div class="legend">
+    <span style="font-weight:500; color:var(--ink);">Niches:</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--finance-fg)"></span>Finance &amp; Money</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--business-fg)"></span>Business &amp; SaaS</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--productivity-fg)"></span>Productivity</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--education-fg)"></span>Education</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer class="footer">
+  Built for your <span>faceless YouTube</span> channel — go make something great.
+</footer>
+
+<script>
+// niche: finance | business | productivity | education
+// d: easy | medium-easy | medium
+// ai: true/false
+// rpm: high | mid
+const ideas = [
+
+  // ════════════════════════════════════════
+  // FINANCE & MONEY × TECH/AI
+  // ════════════════════════════════════════
+  {t:"How to use AI to build a personal investing plan for free",n:"finance",d:"easy",rpm:"high",ai:true,tags:["investing","ai","chatgpt","finance","plan","free"],desc:"ChatGPT portfolio prompts + free screeners — finance audience, very high CPM."},
+  {t:"Best free AI tools to track and grow your net worth",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","net worth","finance","tools","track"],desc:"Monarch Money + ChatGPT insights — personal finance, peak RPM niche."},
+  {t:"How to use AI to analyze stocks before you buy",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","stocks","investing","analyze","chatgpt","finance"],desc:"ChatGPT + Finviz free — stock research workflow for retail investors."},
+  {t:"How I used free AI tools to pay off debt faster",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","debt","finance","pay off","budget","chatgpt"],desc:"Personal finance + AI storytelling — emotional topic, massive audience."},
+  {t:"How to use AI to create a zero-based budget for free",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","budget","finance","zero based","chatgpt"],desc:"ChatGPT budget template prompts — finance audience, very high CPM."},
+  {t:"How to use AI to find undervalued stocks for free",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","stocks","investing","undervalued","free","finance"],desc:"ChatGPT + free screeners — stock picking audience, premium CPM."},
+  {t:"Free AI tools to automate your savings every month",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","savings","automate","finance","money","tools"],desc:"AI + bank automation — personal finance, broad aspirational audience."},
+  {t:"How to use AI to understand your credit score for free",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","credit score","finance","understand","improve"],desc:"Credit education + AI — personal finance, very high CPM topic."},
+  {t:"How to use ChatGPT to negotiate a higher salary",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","chatgpt","salary","negotiate","career","finance","money"],desc:"Salary negotiation scripts via AI — career + finance = very high CPM."},
+  {t:"How to invest in index funds using only free tools",n:"finance",d:"medium-easy",rpm:"high",ai:false,tags:["free","investing","index funds","finance","tools","beginner"],desc:"Beginner investing with free tools — personal finance, highest RPM niche."},
+  {t:"How to use AI to build a dividend income portfolio",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","dividends","income","portfolio","investing","finance"],desc:"Dividend strategy + AI research — income investor audience, high CPM."},
+  {t:"How to use free AI to create a tax prep checklist",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","tax","prep","finance","checklist","chatgpt"],desc:"Tax season content — high CPM, massive annual search demand."},
+  {t:"How to use AI to spot financial scams before it's too late",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","scams","finance","protect","money","fraud","security"],desc:"Financial safety + AI — broad audience, very high CPM topic."},
+  {t:"How to use AI to build a 5-year financial plan for free",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","finance","plan","5 year","budget","investing"],desc:"Long-term financial planning with AI — aspirational finance content."},
+  {t:"Best free apps to track every penny you spend",n:"finance",d:"easy",rpm:"high",ai:false,tags:["free","apps","finance","budget","spend","track","money"],desc:"Copilot, YNAB free, Monarch Money — personal finance comparison."},
+  {t:"How to use AI to find the best high-yield savings account",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","savings","finance","high yield","free","money","compare"],desc:"AI comparison workflow — personal finance, very high CPM."},
+  {t:"How to use AI to flip items on eBay for profit",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","ebay","flip","money","income","ecommerce","sell"],desc:"AI-assisted reselling — side hustle audience, high watch time."},
+  {t:"How to use free AI to learn options trading basics",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","free","options","trading","finance","stocks","learn"],desc:"Options education + AI — finance audience, very premium CPM."},
+  {t:"How to use AI to build passive income with $0 to start",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","passive income","free","money","income","earn","zero cost"],desc:"Zero-cost passive income + AI — aspirational finance content."},
+  {t:"How to use ChatGPT to build a monthly money review habit",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","chatgpt","finance","money","habit","review","monthly"],desc:"Finance habit building with AI — personal development x finance."},
+  {t:"How to use AI to research ETFs before investing",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","etf","investing","research","finance","free"],desc:"ETF research workflow — investing audience, premium CPM."},
+  {t:"How to use AI to automate your crypto tax reporting",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","crypto","tax","automate","finance","bitcoin","reporting"],desc:"Crypto tax + AI — very high CPM, growing demand."},
+  {t:"Best free tools to build a household budget dashboard",n:"finance",d:"medium-easy",rpm:"high",ai:false,tags:["free","budget","finance","household","dashboard","notion","sheets"],desc:"Google Sheets + Notion — personal finance, high CPM."},
+  {t:"How to use AI to compare mortgage options for free",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","mortgage","finance","compare","free","home","real estate"],desc:"Real estate + finance + AI = extremely high CPM combo."},
+  {t:"How to use free AI to plan your retirement at any age",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","free","retirement","finance","plan","investing","age"],desc:"Retirement planning + AI — broad finance audience, peak CPM."},
+
+  // ════════════════════════════════════════
+  // BUSINESS & SAAS × TECH/AI
+  // ════════════════════════════════════════
+  {t:"How to use AI to validate a SaaS idea in 48 hours",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","validate","business","idea","startup","48 hours"],desc:"Startup validation + AI — founder audience, very high CPM."},
+  {t:"How to build a micro SaaS with no code and free tools",n:"business",d:"medium",rpm:"high",ai:false,tags:["free","saas","no code","build","business","tools","startup"],desc:"No-code micro SaaS — entrepreneur audience, premium CPM."},
+  {t:"Best free CRM tools for small businesses in 2026",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","crm","business","small","tools","hubspot","zoho"],desc:"HubSpot free, Zoho free, Notion — B2B audience, very high CPM."},
+  {t:"How to use AI to write a business proposal that wins",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","proposal","write","win","freelance","b2b"],desc:"AI-powered proposals — B2B audience, premium advertiser CPM."},
+  {t:"How to use AI to automate your small business admin",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","automate","admin","tools","small","workflow"],desc:"Business automation + AI — small business owner audience."},
+  {t:"How to start a SaaS reselling business for free",n:"business",d:"medium",rpm:"high",ai:false,tags:["free","saas","resell","business","income","white label","start"],desc:"White-label SaaS reselling — entrepreneur, premium CPM."},
+  {t:"How to use AI to write Terms of Service and Privacy Policy",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","free","business","legal","terms","privacy","website"],desc:"Legal docs via AI — every website owner needs this, very searchable."},
+  {t:"Best free tools to accept payments as a small business",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","business","payments","tools","stripe","paypal","accept"],desc:"Stripe, PayPal, Gumroad — business audience, high CPM."},
+  {t:"How to use AI to write your SaaS pricing page copy",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","saas","pricing","copy","write","business","page"],desc:"Conversion copywriting + AI — SaaS founder audience, very high CPM."},
+  {t:"How to use free AI to run competitor research for your startup",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","startup","competitor","research","business","analysis"],desc:"ChatGPT + SimilarWeb + Product Hunt — founder audience."},
+  {t:"How to use AI to write a cold outreach sequence that books calls",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","cold outreach","email","sequence","b2b","book calls"],desc:"B2B sales + AI = premium advertiser, very high CPM."},
+  {t:"Best free tools to manage a one-person business in 2026",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","business","solopreneur","tools","manage","one person"],desc:"Solopreneur tools roundup — business audience, high CPM."},
+  {t:"How to use AI to create a 12-month business growth plan",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","growth","plan","12 month","strategy","startup"],desc:"Business planning + AI — entrepreneur audience, premium CPM."},
+  {t:"How to use free tools to automate customer support",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","business","customer support","automate","chatbot","tools"],desc:"Support automation + AI — B2B audience, very high CPM."},
+  {t:"How to use AI to find your first 10 SaaS customers",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","customers","find","business","startup","b2b"],desc:"Go-to-market + AI — SaaS founder audience, premium CPM."},
+  {t:"Best free project management software for startups",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","business","project management","startup","tools","notion","linear"],desc:"Notion, Linear free, Asana free — startup audience, high CPM."},
+  {t:"How to use AI to write a job description that attracts top talent",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","job description","hire","talent","write","hr"],desc:"HR + AI — business and startup audience, premium CPM."},
+  {t:"How to use free AI to build your startup's go-to-market strategy",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","free","startup","go to market","strategy","business","gtm"],desc:"GTM strategy + AI — founder audience, very high CPM."},
+  {t:"How to use AI to generate leads on autopilot for free",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","free","leads","automate","business","b2b","generate"],desc:"Lead gen automation + AI — B2B audience, premium CPM."},
+  {t:"How to use free tools to create a professional business website",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","business","website","tools","professional","build"],desc:"Framer free, Carrd, Webflow free — small business owner content."},
+  {t:"How to use AI to write onboarding emails for your SaaS",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","saas","onboarding","email","write","business","users"],desc:"SaaS email copywriting + AI — founder audience, premium CPM."},
+  {t:"Best free tools to build a startup pitch deck",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","startup","pitch deck","tools","investors","slides"],desc:"Gamma + Canva + ChatGPT — founder audience, very high CPM."},
+  {t:"How to use AI to set up OKRs for your business for free",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","business","okr","goals","strategy","team"],desc:"Business goal-setting + AI — B2B audience, high CPM."},
+  {t:"How to use free AI to write a SaaS changelog and announcements",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","free","saas","changelog","write","product","announcements"],desc:"Product marketing + AI — SaaS founder audience, high CPM."},
+  {t:"How to use AI to create an investor update email",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","investor","email","update","startup","write"],desc:"Investor relations + AI — startup founder audience, premium CPM."},
+  {t:"How to use free tools to build a knowledge base for your SaaS",n:"business",d:"medium-easy",rpm:"high",ai:false,tags:["free","saas","knowledge base","business","tools","gitbook","notion"],desc:"GitBook free, Notion — SaaS customer success, high CPM."},
+  {t:"How to use AI to write a case study that sells your service",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","case study","write","sell","service","marketing"],desc:"Marketing + AI — B2B audience, premium advertiser CPM."},
+  {t:"How to use AI to set your SaaS pricing strategy",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","pricing","strategy","business","startup","monetize"],desc:"SaaS pricing + AI — founder audience, very high CPM."},
+  {t:"Best free tools to monitor your SaaS metrics",n:"business",d:"medium-easy",rpm:"high",ai:false,tags:["free","saas","metrics","monitor","tools","business","analytics"],desc:"Baremetrics free, Stripe, Google Analytics — SaaS founder audience."},
+  {t:"How to use AI to write your SaaS product documentation",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","saas","documentation","write","product","business","docs"],desc:"Docs writing + AI — SaaS developer/founder audience, high CPM."},
+  {t:"How to use free AI to reduce churn in your SaaS",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","free","saas","churn","reduce","business","retention"],desc:"Retention strategy + AI — SaaS founder audience, premium CPM."},
+  {t:"How to use AI to automate your business reporting",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","reporting","automate","tools","analytics","free"],desc:"Business intelligence + AI — B2B audience, very high CPM."},
+
+  // ════════════════════════════════════════
+  // PRODUCTIVITY & SELF-IMPROVEMENT × TECH/AI
+  // ════════════════════════════════════════
+  {t:"How to use AI to design your perfect morning routine",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","chatgpt","morning routine","productivity","habits","design"],desc:"Personal development + AI — lifestyle audience, broad reach."},
+  {t:"How to use ChatGPT to build a second brain for free",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","chatgpt","second brain","productivity","free","notion","knowledge"],desc:"Knowledge management + AI — productivity enthusiast audience."},
+  {t:"Best free AI tools to overcome procrastination",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","procrastination","productivity","tools","habits","focus"],desc:"Self-improvement + AI — relatable topic, high engagement audience."},
+  {t:"How to use AI to build a personal development plan",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","productivity","personal development","plan","goals","chatgpt"],desc:"Self-improvement + AI — broad aspirational audience, high CPM."},
+  {t:"How to use free AI to master deep work",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","deep work","focus","productivity","tools","cal newport"],desc:"Deep work concept + AI tools — productivity audience, high CPM."},
+  {t:"How to use AI to journal and reflect on your day",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","journal","reflect","productivity","chatgpt","self improvement"],desc:"AI-assisted journaling — wellness + productivity audience, broad reach."},
+  {t:"How to use AI to learn a new skill in 30 days for free",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","learn","skill","30 days","chatgpt","education"],desc:"Accelerated learning + AI — broad aspirational audience, high RPM."},
+  {t:"Best free tools to manage ADHD and stay focused",n:"productivity",d:"easy",rpm:"high",ai:false,tags:["free","adhd","focus","productivity","tools","health","routine"],desc:"ADHD productivity niche — underserved, high engagement audience."},
+  {t:"How to use AI to create a perfect weekly schedule",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","chatgpt","schedule","week","productivity","plan","time"],desc:"Time blocking + AI — productivity audience, very evergreen."},
+  {t:"How to use AI to read faster and retain more",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","read faster","learn","productivity","chatgpt","retain","education"],desc:"Reading + AI — education and productivity crossover, high CPM."},
+  {t:"Best free apps to replace bad habits with good ones",n:"productivity",d:"easy",rpm:"high",ai:false,tags:["free","habits","apps","productivity","replace","routine","self improvement"],desc:"Habit formation apps — self-improvement niche, broad audience."},
+  {t:"How to use AI to set and track SMART goals for free",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","smart goals","track","productivity","chatgpt","goals"],desc:"Goal setting + AI — self-improvement audience, high CPM."},
+  {t:"How to use AI to build a daily to-do list that works",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","chatgpt","to do","list","productivity","daily","tasks"],desc:"Daily task management with AI — very broad audience, evergreen."},
+  {t:"How to use AI to stop doom-scrolling and take control",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","productivity","doom scrolling","social media","control","habits"],desc:"Digital wellness + AI — relatable topic, very high engagement."},
+  {t:"How to use free AI to become a faster decision-maker",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","decision making","productivity","faster","tools","think"],desc:"Decision-making frameworks + AI — business and personal audience."},
+  {t:"How to use AI to build a custom productivity system",n:"productivity",d:"medium",rpm:"high",ai:true,tags:["ai","chatgpt","productivity system","custom","build","notion","workflow"],desc:"Personal operating system with AI — productivity enthusiast, high CPM."},
+  {t:"Best free tools to achieve inbox zero every day",n:"productivity",d:"easy",rpm:"mid",ai:false,tags:["free","inbox zero","email","productivity","tools","gmail","focus"],desc:"Email management tools — professional audience, evergreen content."},
+  {t:"How to use AI to overcome imposter syndrome",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","productivity","imposter syndrome","self improvement","chatgpt","confidence"],desc:"Self-improvement + AI — relatable, emotionally resonant topic."},
+  {t:"How to use AI to plan your entire year in one session",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","chatgpt","year","plan","productivity","goals","annual","review"],desc:"Annual planning with AI — aspirational productivity content."},
+  {t:"How to use AI to get more done in 4 hours than most do in 8",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","productivity","output","efficiency","chatgpt","work","time"],desc:"Work efficiency + AI — business and productivity crossover audience."},
+  {t:"Best free tools to track your energy levels and peak hours",n:"productivity",d:"easy",rpm:"high",ai:false,tags:["free","energy","track","productivity","tools","peak","focus"],desc:"Biohacking productivity — self-improvement audience, good CPM."},
+  {t:"How to use AI to study and memorize anything faster",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","study","memorize","faster","chatgpt","learn","education","productivity"],desc:"AI study techniques — education + productivity, very high CPM."},
+  {t:"How to use AI to design a digital detox plan",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","digital detox","plan","productivity","wellness","health","chatgpt"],desc:"Wellness + productivity + AI — lifestyle audience, high engagement."},
+  {t:"How to use free AI to build mental toughness",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","mental toughness","self improvement","productivity","habits","mindset"],desc:"Mindset + AI — self-improvement audience, broad reach."},
+  {t:"How to use AI to create a life OS in Notion for free",n:"productivity",d:"medium",rpm:"high",ai:true,tags:["ai","free","notion","life os","productivity","system","build"],desc:"Life operating system + Notion + AI — productivity enthusiast, high CPM."},
+  {t:"Best free AI tools to improve your focus and flow state",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","focus","flow state","productivity","tools","deep work"],desc:"Deep focus tools + AI — productivity niche, high engagement."},
+  {t:"How to use AI to build better boundaries at work",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","productivity","boundaries","work","chatgpt","self improvement","career"],desc:"Work-life balance + AI — broad professional audience, high CPM."},
+  {t:"How to use free AI to build a self-improvement tracker",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","self improvement","tracker","notion","habits","goals"],desc:"Habit tracking system + AI — productivity audience, strong RPM."},
+  {t:"How to use AI to write affirmations that actually work",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","affirmations","self improvement","chatgpt","mindset","productivity"],desc:"Positive psychology + AI — broad wellness audience."},
+  {t:"How to use AI to prepare for any job interview for free",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","interview","job","prepare","career","chatgpt"],desc:"Career prep + AI — job seeker audience, evergreen high CPM."},
+  {t:"Best free tools to manage your time like a CEO",n:"productivity",d:"medium-easy",rpm:"high",ai:false,tags:["free","time management","ceo","productivity","tools","calendar","focus"],desc:"Executive productivity — aspirational audience, high CPM."},
+  {t:"How to use AI to build a reading list that accelerates growth",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","reading list","growth","chatgpt","self improvement","education","books"],desc:"Book recommendations via AI — self-improvement audience, high CPM."},
+  {t:"How to use AI to get promoted faster at work",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","promoted","work","career","chatgpt","productivity","money"],desc:"Career advancement + AI — professional audience, very high CPM."},
+  {t:"How to use AI to create a zero-distraction work environment",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","focus","distraction","work","productivity","chatgpt","environment"],desc:"Focus optimization + AI — remote workers and students."},
+  {t:"How to use free AI to build a weekly review system",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","weekly review","system","productivity","notion","chatgpt"],desc:"GTD-style review with AI — productivity enthusiast, high CPM."},
+
+  // ════════════════════════════════════════
+  // EDUCATION & TUTORIALS × TECH/AI
+  // ════════════════════════════════════════
+  {t:"How to use AI to create a free online course from scratch",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","course","create","education","teach","income"],desc:"Course creation + AI — ed-tech audience, very high CPM."},
+  {t:"Best free AI tools to learn any programming language",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","programming","learn","code","chatgpt","education","dev"],desc:"Coding education + AI — developer audience, premium CPM."},
+  {t:"How to use ChatGPT as your personal tutor for any subject",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","chatgpt","tutor","learn","education","free","subject","study"],desc:"AI tutoring — student audience, evergreen education topic."},
+  {t:"How to use AI to explain complex topics to beginners",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","explain","complex","simple","chatgpt","education","teach","learn"],desc:"AI simplification technique — education creator audience."},
+  {t:"How to use free AI to pass the Google Digital Marketing cert",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","google","certification","digital marketing","study","pass"],desc:"Cert prep + AI — marketing education, high CPM."},
+  {t:"Best free tools to create an online course platform",n:"education",d:"medium-easy",rpm:"high",ai:false,tags:["free","education","course","platform","tools","teachable","thinkific"],desc:"Teachable free, Thinkific free, Podia — ed-tech audience, high CPM."},
+  {t:"How to use AI to write educational YouTube scripts for free",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","youtube","scripts","education","write","teach"],desc:"Educational content creation + AI — creator audience, high CPM."},
+  {t:"How to use AI to build a free study schedule",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","study","schedule","education","chatgpt","student","plan"],desc:"Student study planning + AI — education audience, evergreen."},
+  {t:"How to teach yourself data science for free with AI",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","data science","learn","education","self-taught","tools"],desc:"Data science + AI self-study — developer/data audience, high CPM."},
+  {t:"How to use AI to create educational TikTok content",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","tiktok","education","create","content","teach","faceless"],desc:"EduTok creation + AI — faceless creator, education niche crossover."},
+  {t:"How to use AI to teach kids coding for free",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","kids","coding","teach","education","parents","learn"],desc:"Parent + education + AI — parenting/education crossover, high CPM."},
+  {t:"Best free AI tools to prepare for standardized tests",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","standardized tests","SAT","GRE","prepare","education","tools"],desc:"Test prep + AI — education audience, very high CPM."},
+  {t:"How to use AI to create flashcards from any content",n:"education",d:"easy",rpm:"mid",ai:true,tags:["ai","free","flashcards","study","education","chatgpt","anki","memorize"],desc:"AI flashcard creation — student audience, evergreen content."},
+  {t:"How to use AI to explain your tech tutorials more clearly",n:"education",d:"medium-easy",rpm:"mid",ai:true,tags:["ai","tutorials","explain","tech","youtube","education","create","clarity"],desc:"Tutorial quality improvement with AI — creator education niche."},
+  {t:"How to use free AI to become a self-taught developer",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","developer","self taught","learn","coding","education","path"],desc:"Dev self-education + AI — developer audience, premium CPM."},
+  {t:"How to use AI to create a language learning plan for free",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","language","learn","plan","chatgpt","education","duolingo"],desc:"Language learning + AI — broad education audience, high CPM."},
+  {t:"How to use AI to get a free cybersecurity certification",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","cybersecurity","certification","education","study","career"],desc:"Cybersecurity certs + AI prep — high CPM, growing demand."},
+  {t:"How to use free AI to get Google Analytics certified",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","google analytics","certified","education","marketing","study"],desc:"Cert + AI study plan — marketing education, high CPM."},
+  {t:"How to use AI to break down any YouTube tutorial faster",n:"education",d:"easy",rpm:"mid",ai:true,tags:["ai","youtube","tutorial","learn","break down","faster","chatgpt"],desc:"Learning acceleration with AI — education audience, broad reach."},
+  {t:"Best free resources to learn AI and machine learning in 2026",n:"education",d:"medium-easy",rpm:"high",ai:false,tags:["free","ai","machine learning","learn","resources","education","ml"],desc:"AI education roundup — tech/developer audience, very high CPM."},
+  {t:"How to use AI to self-study for the AWS cloud certification",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","aws","cloud","certification","education","study","career"],desc:"Cloud cert + AI — developer/IT audience, premium CPM."},
+  {t:"How to use AI to learn financial modelling for free",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","financial modelling","learn","finance","education","excel"],desc:"Finance + education + AI — very high CPM combination."},
+  {t:"How to use AI to quiz yourself on anything you're learning",n:"education",d:"easy",rpm:"mid",ai:true,tags:["ai","quiz","learn","chatgpt","education","study","free"],desc:"AI self-testing technique — student and lifelong learner audience."},
+  {t:"How to use free AI to pass your PMP certification",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","pmp","certification","education","project management","study"],desc:"PMP cert + AI — project management audience, premium CPM."},
+  {t:"Best free tools to create an educational YouTube channel",n:"education",d:"medium-easy",rpm:"high",ai:false,tags:["free","education","youtube","channel","tools","create","tutorials"],desc:"EduYouTube creation toolkit — education creator audience, high CPM."},
+  {t:"How to use AI to create a free MBA-level business education",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","mba","business","education","learn","chatgpt","course"],desc:"DIY MBA with AI — business + education crossover, high CPM."},
+  {t:"How to use AI to summarize and study textbooks for free",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","textbooks","summarize","study","education","chatgpt","student"],desc:"Textbook AI summarization — student audience, evergreen."},
+  {t:"How to use free AI to learn UX and UI design",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","ux","ui","design","learn","education","figma"],desc:"Design education + AI — creative/dev audience, high CPM."},
+  {t:"How to use AI to create educational newsletters for free",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","newsletter","educational","create","beehiiv","substack","teach"],desc:"Education newsletter + AI — creator income, high CPM."},
+  {t:"How to use AI to create a study group with no classmates",n:"education",d:"easy",rpm:"mid",ai:true,tags:["ai","study group","solo","education","chatgpt","learn","free"],desc:"Solo studying with AI — student audience, relatable and evergreen."},
+  {t:"How to use AI to master Excel and Google Sheets for free",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","excel","google sheets","master","education","skills","business"],desc:"Spreadsheet skills + AI — business and finance audience, high CPM."},
+
+  // ════════════════════════════════════════
+  // CROSSOVER IDEAS (2+ niches)
+  // ════════════════════════════════════════
+  {t:"How to use AI to build a profitable online tutoring business",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","tutoring","business","income","education","online","free"],desc:"Ed-tech + business + AI = triple high-RPM niche combo."},
+  {t:"How to use free AI tools to start a self-improvement YouTube channel",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","youtube","self improvement","productivity","channel","start"],desc:"Meta content + self-improvement + AI — broad aspirational audience."},
+  {t:"How to use AI to turn your knowledge into a $1000/month income",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","knowledge","income","1000","education","business","money"],desc:"Knowledge monetization + AI — education x business, peak RPM."},
+  {t:"How to use AI to build a SaaS for teachers — step by step",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","teachers","build","education","business","dev"],desc:"Ed-tech SaaS + AI — founder + education audience, premium CPM."},
+  {t:"How to use free AI to build wealth while learning new skills",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","wealth","learn","skills","finance","education","income"],desc:"Finance + education + AI — aspirational, broad audience."},
+  {t:"How to use AI to create a financial education YouTube channel",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","finance","education","youtube","channel","create","money"],desc:"Finance education creation + AI — creator x finance, very high CPM."},
+  {t:"How to use AI to build a productivity SaaS idea from scratch",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","productivity","saas","build","business","idea","startup"],desc:"Productivity + SaaS + AI — founder audience, very premium CPM."},
+  {t:"How to use AI to learn investing and start with $100",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","investing","learn","100 dollars","finance","education","start"],desc:"Beginner investing + AI education — massive finance audience, peak CPM."},
+  {t:"How to build a free AI-powered productivity app with no code",n:"productivity",d:"medium",rpm:"high",ai:true,tags:["ai","free","productivity","app","no code","build","tools"],desc:"No-code AI app + productivity — dev x productivity crossover, high CPM."},
+  {t:"How to use AI to turn your productivity system into a business",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","productivity","business","system","turn","monetize","income"],desc:"Productivity → business model — entrepreneur + productivity audience."},
+  {t:"How to use AI to create a finance course and sell it for free",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","free","finance","course","create","sell","education","income"],desc:"Finance education + course creation + AI — peak RPM combination."},
+  {t:"How to use AI to go from $0 to $5k/month as a self-taught dev",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","dev","5k","income","self taught","education","money","programming"],desc:"Dev career + income + AI — developer + finance, very high CPM."},
+  {t:"How to use AI to build and monetize a tutoring business",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","tutoring","business","monetize","education","income","teach"],desc:"Education business + AI — ed-tech and business audience, high CPM."},
+  {t:"How to use AI to create a SaaS for the finance niche",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","finance","create","business","dev","niche"],desc:"Fintech SaaS + AI — founder + finance, extremely high CPM."},
+  {t:"How to use AI to sell financial spreadsheet templates",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","finance","spreadsheet","templates","sell","income","passive","money"],desc:"Finance templates + AI + passive income — creator finance content."},
+  {t:"How to use free AI to build a self-improvement podcast",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","podcast","self improvement","productivity","build","income"],desc:"Self-improvement podcast + AI — creator economy, broad audience."},
+  {t:"How to use AI to create a business education newsletter",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","education","newsletter","create","beehiiv","income"],desc:"Business newsletter + AI — B2B education, high CPM."},
+  {t:"How to use free AI to offer financial coaching online",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","free","finance","coaching","online","business","income","money"],desc:"Finance coaching business + AI — high RPM, aspirational audience."},
+  {t:"How to use AI to build a study-with-me YouTube channel",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","study with me","youtube","education","channel","build","income"],desc:"Study-with-me format + AI tools — education creator niche."},
+  {t:"How to use AI to turn your expertise into a digital product",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","expertise","digital product","sell","education","income","money"],desc:"Knowledge monetization + AI — education x business, peak RPM."},
+
+  // ── EXTRA FINANCE ─────────────────────────────────────────────────────────
+  {t:"How to use AI to build a stock watchlist for free",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","stocks","watchlist","investing","finance","monitor"],desc:"Stock monitoring + AI — investing audience, premium CPM."},
+  {t:"How to use free tools to automate your bill payments",n:"finance",d:"easy",rpm:"high",ai:false,tags:["free","finance","bills","automate","payments","money","tools"],desc:"Personal finance automation — broad audience, very high CPM."},
+  {t:"How to use AI to build a debt payoff calculator for free",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","debt","payoff","calculator","finance","tools"],desc:"Debt management + AI — personal finance, very high CPM."},
+  {t:"How to use AI to understand your W-2 and tax forms",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","tax","w2","finance","understand","chatgpt"],desc:"Tax education + AI — massive annual audience, very high CPM."},
+  {t:"How to use AI to set financial goals and hit them",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","finance","goals","set","hit","money","chatgpt","plan"],desc:"Financial goal-setting with AI — personal finance, high CPM."},
+  {t:"Best free tools to calculate compound interest and returns",n:"finance",d:"easy",rpm:"high",ai:false,tags:["free","finance","compound interest","calculator","investing","tools","returns"],desc:"Investment math tools — finance education audience, high CPM."},
+  {t:"How to use AI to write a financial hardship letter",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","finance","hardship","letter","write","money","free"],desc:"AI writing for financial situations — relatable, high-search topic."},
+  {t:"How to use AI to find side hustles that match your skills",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","side hustle","skills","finance","money","chatgpt","match"],desc:"Side hustle matching with AI — income audience, very high CPM."},
+  {t:"How to use free AI to build a crypto investment strategy",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","free","crypto","investing","strategy","finance","bitcoin","plan"],desc:"Crypto + AI strategy — finance audience, extremely high CPM."},
+  {t:"How to use AI to analyze your spending habits for free",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","free","spending","habits","finance","analyze","budget","chatgpt"],desc:"Personal finance AI analysis — relatable topic, high CPM."},
+  {t:"How to use AI to negotiate your credit card interest rate",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","finance","credit card","interest","negotiate","money","chatgpt"],desc:"Credit + AI negotiation tips — personal finance, very high CPM."},
+  {t:"How to use free tools to invest in real estate with no money",n:"finance",d:"medium",rpm:"high",ai:false,tags:["free","finance","real estate","invest","no money","tools","property"],desc:"Real estate + creative investing — finance audience, peak CPM."},
+  {t:"How to use AI to build a frugal living plan",n:"finance",d:"easy",rpm:"high",ai:true,tags:["ai","finance","frugal","living","plan","money","save","chatgpt"],desc:"Frugality + AI — personal finance lifestyle audience, high CPM."},
+  {t:"How to use AI to find and apply for grants and scholarships",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","grants","scholarships","finance","money","education"],desc:"Free money search with AI — education x finance, very high CPM."},
+
+  // ── EXTRA BUSINESS ────────────────────────────────────────────────────────
+  {t:"How to use AI to write FAQs for your business website",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","business","faq","website","write","free","chatgpt"],desc:"Website copywriting + AI — small business owner audience, high CPM."},
+  {t:"How to use free AI to build a content marketing strategy",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","business","content marketing","strategy","seo","tools"],desc:"Content strategy + AI — marketing audience, premium CPM."},
+  {t:"Best free tools to run your freelance business in 2026",n:"business",d:"easy",rpm:"high",ai:false,tags:["free","business","freelance","tools","run","manage","2026"],desc:"Freelance business toolkit — very high CPM, broad audience."},
+  {t:"How to use AI to write a product launch email sequence",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","product launch","email","sequence","write","saas"],desc:"Launch email copy + AI — business and creator audience, high CPM."},
+  {t:"How to use AI to build a referral program from scratch",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","business","referral","program","build","growth","saas","free"],desc:"Viral growth + AI — startup/business audience, premium CPM."},
+  {t:"How to use free tools to do influencer marketing on a budget",n:"business",d:"medium-easy",rpm:"high",ai:false,tags:["free","business","influencer","marketing","budget","tools","social media"],desc:"Influencer marketing DIY — business + creator audience."},
+  {t:"How to use AI to write a strong 'About Us' page",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","business","about us","write","website","chatgpt","free"],desc:"Website copywriting + AI — small business owner content."},
+  {t:"How to use AI to create a business SOPs for free",n:"business",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","business","sop","standard operating procedures","write","team"],desc:"Business process documentation + AI — B2B audience, premium CPM."},
+  {t:"Best free tools to build a digital product storefront",n:"business",d:"medium-easy",rpm:"high",ai:false,tags:["free","business","digital product","storefront","gumroad","tools","sell"],desc:"Digital product selling — business + creator economy, high CPM."},
+  {t:"How to use AI to create your business mission and vision",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","business","mission","vision","write","brand","chatgpt","free"],desc:"Brand strategy + AI — startup and small business, high CPM."},
+  {t:"How to use AI to optimize your Google Business Profile",n:"business",d:"easy",rpm:"high",ai:true,tags:["ai","business","google","profile","optimize","local seo","free"],desc:"Local business SEO + AI — small business owner, very high CPM."},
+  {t:"How to use free tools to build a B2C ecommerce business",n:"business",d:"medium",rpm:"high",ai:false,tags:["free","business","ecommerce","b2c","build","tools","store","sell"],desc:"E-commerce from scratch + free tools — business audience, high CPM."},
+  {t:"How to use AI to write winning grant applications",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","grants","write","win","money","nonprofit","free"],desc:"Grant writing + AI — nonprofit + business audience, high CPM."},
+
+  // ── EXTRA PRODUCTIVITY ────────────────────────────────────────────────────
+  {t:"How to use AI to build a distraction-free workspace",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","productivity","workspace","distraction free","focus","build","chatgpt"],desc:"Workspace optimization + AI — productivity audience, relatable."},
+  {t:"How to use free AI to develop a growth mindset",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","growth mindset","productivity","self improvement","chatgpt","develop"],desc:"Mindset development + AI — self-improvement audience, broad reach."},
+  {t:"Best free tools to build a personal knowledge management system",n:"productivity",d:"medium-easy",rpm:"high",ai:false,tags:["free","productivity","knowledge management","pkm","tools","obsidian","notion"],desc:"PKM system — productivity niche, high engagement audience."},
+  {t:"How to use AI to write better and faster every day",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","write","faster","productivity","chatgpt","improve","daily","skill"],desc:"Writing productivity + AI — creator and professional audience."},
+  {t:"How to use free AI to master time blocking",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","time blocking","productivity","master","schedule","chatgpt"],desc:"Time blocking system with AI — productivity enthusiast audience."},
+  {t:"How to use AI to deal with burnout and recover faster",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","burnout","recover","productivity","wellness","chatgpt","health"],desc:"Burnout recovery + AI — relatable work topic, high CPM."},
+  {t:"How to use free AI to build a reading habit that sticks",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","free","reading","habit","build","self improvement","chatgpt"],desc:"Reading habit + AI — self-improvement audience, evergreen content."},
+  {t:"How to use AI to get better sleep and perform better",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","sleep","productivity","perform","chatgpt","health","wellness"],desc:"Sleep optimization + productivity + AI — broad lifestyle audience."},
+  {t:"How to use AI to level up your communication skills",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","communication","skills","productivity","chatgpt","career","improve"],desc:"Communication + AI — career and professional audience, high CPM."},
+  {t:"How to use free AI to find and fix your bad habits",n:"productivity",d:"easy",rpm:"high",ai:true,tags:["ai","free","bad habits","fix","productivity","chatgpt","self improvement"],desc:"Habit change + AI — self-improvement, relatable topic."},
+  {t:"How to use AI to build a personal board of advisors",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","productivity","advisors","board","chatgpt","mentors","self improvement"],desc:"AI as a mentor simulation — unique self-improvement angle."},
+  {t:"Best free productivity frameworks and how to pick one",n:"productivity",d:"easy",rpm:"high",ai:false,tags:["free","productivity","frameworks","gtd","time blocking","pomodoro","pick"],desc:"GTD vs time blocking vs Pomodoro — productivity education, high CPM."},
+
+  // ── EXTRA EDUCATION ───────────────────────────────────────────────────────
+  {t:"How to use AI to create a free masterclass in your niche",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","masterclass","create","education","niche","teach","income"],desc:"Free masterclass + AI — creator + education + income, very high CPM."},
+  {t:"How to use free AI to get a remote tech job from anywhere",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","tech job","remote","education","career","learn","anywhere"],desc:"Remote tech career + AI — developer/education audience, premium CPM."},
+  {t:"How to use AI to create bite-sized educational content",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","education","bite sized","content","create","youtube shorts","tiktok"],desc:"Micro-content education + AI — creator education niche."},
+  {t:"Best free platforms to sell your knowledge online in 2026",n:"education",d:"easy",rpm:"high",ai:false,tags:["free","education","sell","knowledge","platform","gumroad","teachable","income"],desc:"Knowledge selling platforms — education + business, high CPM."},
+  {t:"How to use AI to create a free mini-course in a weekend",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","mini course","create","weekend","education","income","teach"],desc:"Mini-course creation + AI — ed-tech audience, high CPM."},
+  {t:"How to use free AI to write lesson plans and curriculum",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","lesson plan","curriculum","education","teacher","write"],desc:"Teacher + AI tools — ed-tech audience, growing demand."},
+  {t:"How to use AI to learn programming without a CS degree",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","programming","learn","no degree","education","self taught","career","dev"],desc:"Self-taught dev path + AI — developer education, premium CPM."},
+  {t:"How to use free AI to make your content go viral on YouTube",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","youtube","viral","content","education","strategy","creator"],desc:"YouTube growth strategy + AI — creator education niche, high CPM."},
+  {t:"How to use AI to build a free certification program",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","certification","program","build","education","create","business"],desc:"Custom cert program + AI — education business, high CPM."},
+  {t:"How to use AI to create an educational mobile app for free",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","free","educational","mobile app","create","no code","education"],desc:"Ed-app creation with AI — education + dev crossover, high CPM."},
+  {t:"How to use AI to teach yourself public speaking for free",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","public speaking","teach","self","education","chatgpt","career"],desc:"Public speaking + AI coaching — career + education, high CPM."},
+  {t:"Best free AI tools for homeschooling parents in 2026",n:"education",d:"easy",rpm:"high",ai:true,tags:["ai","free","homeschool","parents","education","tools","2026","teach"],desc:"Homeschool + AI — parenting + education audience, high CPM."},
+  {t:"How to use AI to write educational email courses for free",n:"education",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","email course","write","education","income","beehiiv","teach"],desc:"Email course creation + AI — creator education, high CPM."},
+  {t:"How to use AI to build a 6-month financial freedom roadmap",n:"finance",d:"medium",rpm:"high",ai:true,tags:["ai","finance","freedom","roadmap","6 month","money","plan","chatgpt"],desc:"Financial freedom planning + AI — aspirational finance, peak CPM."},
+  {t:"How to use AI to create a customer success playbook",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","business","customer success","playbook","create","saas","b2b"],desc:"Customer success + AI — SaaS audience, premium CPM."},
+  {t:"How to use AI to build a 90-day self-improvement challenge",n:"productivity",d:"medium-easy",rpm:"high",ai:true,tags:["ai","productivity","90 day","challenge","self improvement","build","chatgpt"],desc:"Self-improvement challenge + AI — aspirational lifestyle audience."},
+  {t:"How to use free AI to become financially literate in 30 days",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","free","financially literate","30 days","education","finance","learn"],desc:"Finance education + AI — massive beginner finance audience."},
+  {t:"How to use AI to automate your SaaS customer feedback loop",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","saas","feedback","automate","business","product","loop"],desc:"Product feedback + AI automation — SaaS founder audience, premium CPM."},
+  {t:"How to use AI to build an online tutoring business from zero",n:"education",d:"medium",rpm:"high",ai:true,tags:["ai","tutoring","business","online","zero","build","income","education"],desc:"Tutoring business + AI — ed-tech + business crossover, high CPM."},
+  {t:"How to use AI to design a minimalist productivity setup",n:"productivity",d:"easy",rpm:"mid",ai:true,tags:["ai","minimalist","productivity","setup","design","chatgpt","tools","workspace"],desc:"Minimalist productivity + AI — lifestyle and productivity audience."},
+  {t:"How to use AI to create a beginner investing guide for your audience",n:"finance",d:"medium-easy",rpm:"high",ai:true,tags:["ai","finance","investing","beginner","guide","create","youtube","education"],desc:"Finance content creation + AI — creator finance, very high CPM."},
+  {t:"How to use AI to build a no-code business automation system",n:"business",d:"medium",rpm:"high",ai:true,tags:["ai","no code","business","automation","system","build","free","tools"],desc:"No-code automation + AI — business audience, premium CPM."},
+];
+
+let activeFilter = 'all';
+
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function render() {
+  const rawQ = document.getElementById('search').value;
+  const words = rawQ.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const sort = document.getElementById('sort-select').value;
+
+  let filtered = ideas.filter(idea => {
+    const matchFilter =
+      activeFilter === 'all' ||
+      (activeFilter === 'finance' && idea.n === 'finance') ||
+      (activeFilter === 'business' && idea.n === 'business') ||
+      (activeFilter === 'productivity' && idea.n === 'productivity') ||
+      (activeFilter === 'education' && idea.n === 'education') ||
+      (activeFilter === 'ai' && idea.ai) ||
+      (activeFilter === 'easy' && idea.d === 'easy') ||
+      (activeFilter === 'medium-easy' && idea.d === 'medium-easy') ||
+      (activeFilter === 'medium' && idea.d === 'medium');
+
+    const searchable = (idea.t + ' ' + idea.desc + ' ' + idea.tags.join(' ')).toLowerCase();
+    const matchSearch = words.length === 0 || words.every(w => searchable.includes(w));
+    return matchFilter && matchSearch;
+  });
+
+  const nicheOrder = { finance: 0, business: 1, productivity: 2, education: 3 };
+  const diffOrder  = { easy: 0, 'medium-easy': 1, medium: 2 };
+  if (sort === 'niche')       filtered.sort((a, b) => nicheOrder[a.n] - nicheOrder[b.n]);
+  else if (sort === 'easy-first')  filtered.sort((a, b) => diffOrder[a.d]  - diffOrder[b.d]);
+  else if (sort === 'hard-first')  filtered.sort((a, b) => diffOrder[b.d]  - diffOrder[a.d]);
+  else if (sort === 'az')          filtered.sort((a, b) => a.t.localeCompare(b.t));
+
+  document.getElementById('count-num').textContent = filtered.length;
+
+  const nicheMeta = {
+    finance:     { badge: 'b-finance',      label: 'Finance & Money',   cls: 'finance' },
+    business:    { badge: 'b-business',     label: 'Business & SaaS',   cls: 'business' },
+    productivity:{ badge: 'b-productivity', label: 'Productivity',       cls: 'productivity' },
+    education:   { badge: 'b-education',    label: 'Education',          cls: 'education' },
+  };
+  const diffMeta = {
+    easy:          ['b-easy',    'Easy'],
+    'medium-easy': ['b-medeasy', 'Medium Easy'],
+    medium:        ['b-medium',  'Medium'],
+  };
+
+  const grid = document.getElementById('grid');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="no-results">No ideas matched "<strong>${rawQ}</strong>" — try a different keyword.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((idea, i) => {
+    const nm  = nicheMeta[idea.n];
+    const [dc, dl] = diffMeta[idea.d];
+    const aiBadge = idea.ai ? `<span class="badge b-ai">AI</span>` : '';
+    const rpmBadge = idea.rpm === 'high' ? `<span class="badge b-rpm">High RPM</span>` : '';
+    return `<div class="card ${nm.cls}">
+      <div class="card-top">
+        <span class="card-num">#${String(i+1).padStart(3,'0')}</span>
+        <span class="card-title">${idea.t}</span>
+      </div>
+      <div class="card-badges">
+        <span class="badge ${nm.badge}">${nm.label}</span>
+        <span class="badge ${dc}">${dl}</span>
+        ${rpmBadge}${aiBadge}
+      </div>
+      <div class="card-desc">${idea.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
